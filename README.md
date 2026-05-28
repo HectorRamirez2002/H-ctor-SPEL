@@ -1,25 +1,35 @@
-###Scrips y guia de utilización de ellos de parte de proyecto de tesis de Héctor en SPEL:
+# Scripts de Análisis y Procesamiento de imágenes - Tesis (SPEL - Héctor Ramírez)
 
-"analisis.py"
+Este repositorio contiene los scripts necesarios para el procesamiento y análisis estadístico de imágenes capturadas en el SUCHAI 4 para obtener datos sobre la linealidad, SNR o distribución de ruido para su posterior estudio.
 
-Este scrip funciona con un main de argsave, tiene 3 argumentos a entregar:
+---
 
--carpeta de entrada de imagenes normalizadas
+### `analisis.py`
 
--proceso a realizar: linealidad, SNR, distribucion
+Este script utiliza `argparse` para gestionar los parámetros de ejecución. Requiere tres argumentos para funcionar:
 
--nombre con extension .csv de salida
+1. **Carpeta de entrada:** Directorio que contiene las imágenes normalizadas o sin normalizar a utilizar.
+2. **Proceso a realizar:** Tarea a ejecutar (`linealidad`, `snr` o `distribucion`).
+3. **Archivo de salida:** Nombre del archivo resultante con extensión `.csv`.
 
-Comando de ejmplo: python analisis.py norm_max103 linealidad linealidad_norm_max103.csv
+**Comando de ejemplo:**
+```bash
+python analisis.py norm_max103 linealidad linealidad_norm_max103.csv
+```
+---
+### `normalizar.py`
+
+Este scrip tambien utiliza `argparse` para gestionar los parámetros de ejecución. Requiere dos argumentos para funcionar:
+
+1. **Carpeta de entrada**: Directorio que contiene las imágenes que se requiere normalizar
+2. **Carpeta de salida**: Directorio que contendra a las imágenes normalizadas, en caso de no existir se puede crear en la carpeta de ejecución del scrip solo dando un nombre
+
+**Comando de ejemplo:**
+
+```bash
+python normalizar.py max103 norm_max103
+```
+---
 
 
-"normalizar.py"
-
-Este scrip sirve para normalizar las imagenes tomadas con anterioridad, recibe 2 argumentos con un main de argsave tambien:
-
-- Ubicación de la carpeta de las imagenes a normalizar
-
--Nombre de la carpeta donde se agregaran las  imagenes normalizadas (si no existe la crea)
-
-Comando de ejemplo: python normalizar.py max103 norm_max103
 
