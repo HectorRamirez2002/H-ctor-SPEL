@@ -19,7 +19,7 @@ python analisis.py norm_max103 linealidad linealidad_norm_max103.csv
 ```
 
 ```bash
-python analisis.py norm_max103 distribución dist_norm_max103.csv --max_pares 8
+python analisis.py norm_max103 distribucion dist_norm_max103.csv --max_pares 8
 ```
 ---
 ### `normalizar.py`
