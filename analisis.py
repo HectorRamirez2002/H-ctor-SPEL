@@ -24,11 +24,11 @@ def procesar_imagenes_camara(folder_path, tarea, nombre_csv):
         writer = csv.writer(f)
         
         if tarea == "snr":
-            writer.writerow(["exptime", "SNR", "mean", "std", "pares_procesados"])
+            writer.writerow(["name", "exptime", "SNR", "mean", "std", "pares_procesados"])
         elif tarea == "linealidad":
-            writer.writerow(["exptime", "mean", "std"])
+            writer.writerow(["name", "exptime", "mean", "std"])
         elif tarea == "distribucion":
-            writer.writerow(["par", "exptime", "bin_center", "count"])
+            writer.writerow(["name", "par", "exptime", "bin_center", "count"])
         else:
             raise ValueError("Tarea no válida. Usa: 'snr', 'linealidad' o 'distribucion'")
 
@@ -43,7 +43,8 @@ def procesar_imagenes_camara(folder_path, tarea, nombre_csv):
                 for i in range(n):
                     # Cargar imagen, guardar media y desviación estándar para la linealidad
                     img = cv2.imread(imagenes_filtradas[i], cv2.IMREAD_UNCHANGED).astype(np.float32)
-                    writer.writerow([exptime, np.mean(img), np.std(img, ddof=1)])
+                    name = os.path.basename(imagenes_filtradas[i])
+                    writer.writerow([name, exptime, np.mean(img), np.std(img, ddof=1)])
             
             if tarea == "snr":
                 for i in range(0, n - 1, 2):
@@ -55,9 +56,10 @@ def procesar_imagenes_camara(folder_path, tarea, nombre_csv):
                     I_mean = np.mean(img_suma)
                     sigma = np.std(img_resta, ddof=1)   
                     snr_val = np.sqrt(2) * I_mean / sigma  #EMVA Standard 1288
-                    writer.writerow([exptime, snr_val, I_mean, sigma, (i//2)+1])  # Pares procesados
+                    name = os.path.basename(imagenes_filtradas[i])
+                    writer.writerow([name, exptime, snr_val, I_mean, sigma, (i//2)+1])  # Pares procesados
             if tarea == "distribucion":
-                limite_pares = min(n - 1, 5)
+                limite_pares = min(n - 1, 10)
                 for i in range(0, limite_pares, 2):
                     # Cargar dos imágenes consecutivas, calcular la resta y generar el histograma de los valores de la resta
                     img1 = cv2.imread(imagenes_filtradas[i], cv2.IMREAD_UNCHANGED).astype(np.float32)
@@ -65,7 +67,7 @@ def procesar_imagenes_camara(folder_path, tarea, nombre_csv):
                     img_resta = img1 - img2
                     img_r = img_resta.flatten()
                     bin_width = 40 #ancho de cada bin del histograma
-                    
+                    name = os.path.basename(imagenes_filtradas[i])
                     rango_total = (-65536, 65536)
                     span_total = rango_total[1] - rango_total[0]  # Esto da 131,072 unidades de rango
 
@@ -84,7 +86,7 @@ def procesar_imagenes_camara(folder_path, tarea, nombre_csv):
                     par_img=i//2 + 1
                     #guardamos los bins
                     for e in range(len(counts_filtrados)):
-                        writer.writerow([par_img, exptime, bin_centers_filtrados[e], counts_filtrados[e]])
+                        writer.writerow([name, par_img, exptime, bin_centers_filtrados[e], counts_filtrados[e]])
 
 
 if __name__ == "__main__":
