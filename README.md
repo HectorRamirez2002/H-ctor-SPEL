@@ -6,15 +6,20 @@ Este repositorio contiene los scripts necesarios para el procesamiento y anális
 
 ### `analisis.py`
 
-Este script utiliza `argparse` para gestionar los parámetros de ejecución. Requiere tres argumentos para funcionar:
+Este script utiliza `argparse` para gestionar los parámetros de ejecución. Requiere tres argumentos basicos para funcionar, pero puede incluirse un cuarto opcional :
 
 1. **Carpeta de entrada:** Directorio que contiene las imágenes normalizadas o sin normalizar a utilizar.
 2. **Proceso a realizar:** Tarea a ejecutar (`linealidad`, `snr` o `distribucion`).
 3. **Archivo de salida:** Nombre del archivo resultante con extensión `.csv`.
+4. **(Opcional) Número de histogramas de distribución:** Agregando `--max_pares`al final y un número, se puede ajustar la cantidad de histogramas por tiempo de exposición, por defecto esta en 3.
 
-**Comando de ejemplo:**
+**Comandos de ejemplo:**
 ```bash
 python analisis.py norm_max103 linealidad linealidad_norm_max103.csv
+```
+
+```bash
+python analisis.py norm_max103 distribución dist_norm_max103.csv --max_pares 8
 ```
 ---
 ### `normalizar.py`
@@ -30,6 +35,8 @@ Este scrip tambien utiliza `argparse` para gestionar los parámetros de ejecuci�
 python normalizar.py max103 norm_max103
 ```
 ---
+
+
 
 
 
