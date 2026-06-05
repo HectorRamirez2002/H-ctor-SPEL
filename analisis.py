@@ -5,7 +5,7 @@ import glob
 import csv
 import argparse
 
-def procesar_imagenes_camara(folder_path, tarea, nombre_csv):
+def procesar_imagenes_camara(folder_path, tarea, nombre_csv, max_pares):
     """
     Analiza imágenes de una carpeta según la tarea solicitada.
     Tareas disponibles: 'linealidad', 'snr', 'distribucion'
@@ -59,7 +59,7 @@ def procesar_imagenes_camara(folder_path, tarea, nombre_csv):
                     name = os.path.basename(imagenes_filtradas[i])
                     writer.writerow([name, exptime, snr_val, I_mean, sigma, (i//2)+1])  # Pares procesados
             if tarea == "distribucion":
-                limite_pares = min(n - 1, 10)
+                limite_pares = min(n - 1, max_pares * 2)
                 for i in range(0, limite_pares, 2):
                     # Cargar dos imágenes consecutivas, calcular la resta y generar el histograma de los valores de la resta
                     img1 = cv2.imread(imagenes_filtradas[i], cv2.IMREAD_UNCHANGED).astype(np.float32)
@@ -78,7 +78,7 @@ def procesar_imagenes_camara(folder_path, tarea, nombre_csv):
                     bin_centers = (bin_edges[:-1] + bin_edges[1:]) / 2
 
                     # Eliminar los bines donde count < 10
-                    umbral = 10
+                    umbral = 5
                     mascara_validos = counts >= umbral
 
                     counts_filtrados = counts[mascara_validos]
@@ -96,8 +96,8 @@ if __name__ == "__main__":
     parser.add_argument("carpeta", type=str, help="Carpeta de entrada")
     parser.add_argument("tarea", type=str, choices=['snr', 'linealidad', 'distribucion'], help="Análisis a realizar")
     parser.add_argument("salida", type=str, help="Nombre del CSV resultante con extensión .csv")
-
+    parser.add_argument("--max_pares", type=int, default=3, help="Cantidad máxima de histogramas...")
     args = parser.parse_args()
 
     # Ejecutamos la función usando lo que el usuario escribió en la terminal
-    procesar_imagenes_camara(args.carpeta, args.tarea, args.salida)
+    procesar_imagenes_camara(args.carpeta, args.tarea, args.salida, args.max_pares)
