@@ -35,7 +35,14 @@ Este scrip tambien utiliza `argparse` para gestionar los parámetros de ejecuci�
 python normalizar.py max103 norm_max103
 ```
 ---
+## Prerrequisitos e Instalación
 
+Este proyecto requiere Python 3.12 o superior y un conjunto de librerías externas para el procesamiento de matrices e imágenes. 
+
+Para configurar tu entorno e instalar todas las dependencias con las versiones exactas utilizadas en el desarrollo, abre una terminal en la raíz de este proyecto y utilizando `requirements.txt` ejecuta:
+
+```bash
+pip install -r requirements.txt
 
 
 
